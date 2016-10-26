@@ -2,7 +2,7 @@
 %for solution of system of linear equations
 %Author: RAVI KUMAR THAKUR
 %The following program solves system
-%of liinear equations having n unknowns
+%of linear equations having n unknowns
 %User inputs the coeeficient of unknowns
 n=input('Enter the number of unknowns ');
 a=zeros(n,n);
