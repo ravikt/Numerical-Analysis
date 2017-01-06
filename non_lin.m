@@ -10,9 +10,9 @@ n=2;
 
 % Initial solution
 
-ai = 0;
-bi = 0;
-ti = 0;
+ai = 0.1;
+bi = 0.1;
+ti = 0.1;
 
 syms a  b  t
 
@@ -33,9 +33,9 @@ Jinv = inv(J);
 soln = [ai,bi,ti];
 
 for i=1:10
-   jacob = double(subs(Jinv,{a,b,t},soln)); 
+   jacob = subs(Jinv,{a,b,t},soln); 
       x1 = subs(f1,{a,b,t},soln);
       x2 = subs(f2,{a,b,t},soln);
       x3 = subs(f3,{a,b,t},soln);
-    soln = jacob * [x1;x2;x3];  
+    soln = jacob*[x1;x2;x3];  
 end
