@@ -10,15 +10,12 @@ n=2;
 
 % Initial solution
 
-ai = 0.1;
-bi = 0.1;
-ti = 0.1;
 
 syms a  b  t
 
 p = 1-(1-t)^(N-1);
 x = a+(1-a)*b;
-y = p*(1-x*(m+1));
+y = p*(1-x^(m+1));
 
 f1 = ((p*(1-a)*(1-b)*(L + Lack*(1-p)*N*t)) / (1-(1-t)^N)) - a; 
 f2 = ((p + N*t*(1-p)) / (2-(1-t)^N + N*t*(1-p))) - b;
@@ -27,26 +24,24 @@ f3 = (((1 - x^(m+1))*(1 - y^(n+1))*b0) / ((1-x)*(1-y))) - t;
 % Calculation of jacobian
 
  J = [diff(f1,a),diff(f1,b),diff(f1,t);diff(f2,a),diff(f2,b),diff(f2,t);...
-    diff(f3,a),diff(f3,b),diff(f3,t);];
-% Jinv = inv(J);
+    diff(f3,a),diff(f3,b),diff(f3,t)];
+ JI = inv(J);
 % 
-prev_sol = [ai,bi,ti];
+prev_sol = [0.1,0.1,0.1];
+next_sol = [0,0,0];
+eps=1;
+k= 1;
 % 
-for i=1:10
- 
-   jacob = subs(J,{a,b,t},prev_sol); 
-   j=inv(jacob);
+while abs(eps) > 0.00001
+   k
    x1 = subs(f1,{a,b,t},prev_sol);
    x2 = subs(f2,{a,b,t},prev_sol);
    x3 = subs(f3,{a,b,t},prev_sol);
-   next_sol = prev_sol' - j*[x1;x2;x3];  
+   jacob = subs(JI,{a,b,t},prev_sol); 
+   next_sol = prev_sol' - jacob*[x1;x2;x3];
+   double(next_sol')
+   eps = min(next_sol - prev_sol');
+   check=double(abs(eps))
    prev_sol = next_sol';
-   
+   k=k+1;
 end
-% for i=1:10
-%    jacob = subs(Jinv,{a,b,t},soln); 
-%       x1 = subs(f1,{a,b,t},soln);
-%       x2 = subs(f2,{a,b,t},soln);
-%       x3 = subs(f3,{a,b,t},soln);
-%     soln = jacob*[x1;x2;x3];  
-% end
