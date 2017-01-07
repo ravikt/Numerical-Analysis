@@ -40,7 +40,7 @@ while abs(eps) > 0.00001
    jacob = subs(JI,{a,b,t},prev_sol); 
    next_sol = prev_sol' - jacob*[x1;x2;x3];
    double(next_sol')
-   eps = min(next_sol - prev_sol');
+   eps = max(next_sol - prev_sol');
    check=double(abs(eps))
    prev_sol = next_sol';
    k=k+1;
