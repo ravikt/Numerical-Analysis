@@ -4,7 +4,7 @@ close all;
 L    = 5;
 Lack = 2;
 N=10;
-b0=0.00018;
+b0=0.00020;
 m=2;
 n=2;
 
@@ -17,7 +17,10 @@ p = 1-(1-t)^(N-1);
 x = a+(1-a)*b;
 y = p*(1-x^(m+1));
 
-f1 = ((p*(1-a)*(1-b)*(L + Lack*(1-p)*N*t)) / (1-(1-t)^N)) - a; 
+A1=p*(1-a)*(1-b)*L;
+A2=(Lack*(1-p)*N*t*p*(1-a)*(1-b))/(1-(1-t)^N);
+f1=A1+A2-a;
+%f1 = ((p*(1-a)*(1-b)*(L + Lack*(1-p)*N*t)) / (1-(1-t)^N)) - a; 
 f2 = ((p + N*t*(1-p)) / (2-(1-t)^N + N*t*(1-p))) - b;
 f3 = (((1 - x^(m+1))*(1 - y^(n+1))*b0) / ((1-x)*(1-y))) - t;
 
@@ -29,10 +32,10 @@ f3 = (((1 - x^(m+1))*(1 - y^(n+1))*b0) / ((1-x)*(1-y))) - t;
 % 
 prev_sol = [0.1,0.1,0.1];
 next_sol = [0,0,0];
-eps=1;
+error=1;
 k= 1;
 % 
-while abs(eps) > 0.00001
+while error > 0.001
    k
    x1 = subs(f1,{a,b,t},prev_sol);
    x2 = subs(f2,{a,b,t},prev_sol);
@@ -40,8 +43,8 @@ while abs(eps) > 0.00001
    jacob = subs(JI,{a,b,t},prev_sol); 
    next_sol = prev_sol' - jacob*[x1;x2;x3];
    double(next_sol')
-   eps = max(next_sol - prev_sol');
-   check=double(abs(eps))
+   error = max(abs(next_sol - prev_sol'));
+   %check=double(error)
    prev_sol = next_sol';
    k=k+1;
 end
