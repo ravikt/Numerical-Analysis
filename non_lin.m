@@ -31,20 +31,24 @@ f3 = (((1 - x^(m+1))*(1 - y^(n+1))*b0) / ((1-x)*(1-y))) - t;
  JI = inv(J);
 % 
 prev_sol = [0.1,0.1,0.1];
+%prev_sol = [0.0126,0.0038,0.0002];
 next_sol = [0,0,0];
 error=1;
 k= 1;
 % 
 while error > 0.001
    k
+
    x1 = subs(f1,{a,b,t},prev_sol);
    x2 = subs(f2,{a,b,t},prev_sol);
    x3 = subs(f3,{a,b,t},prev_sol);
    jacob = subs(JI,{a,b,t},prev_sol); 
    next_sol = prev_sol' - jacob*[x1;x2;x3];
+   
    double(next_sol')
-   error = max(abs(next_sol - prev_sol'));
-   %check=double(error)
+   error = double(max(abs(next_sol - prev_sol')));
+  
    prev_sol = next_sol';
    k=k+1;
 end
+% end
